@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My first App</string>
+    <string name="hello_world">Hello World</string>
+    <string name="offline">Offline</string>
+    <string name="vsia">1 VS IA</string>
+    <string name="oneVsOne">1 VS 1</string>
+    <string name="vsteam">Team VS Team</string>
+    <string name="online">Online</string>
+    <string name="oneVsOneOnline">1 VS 1 Online</string>
+</resources>

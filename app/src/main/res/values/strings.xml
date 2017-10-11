@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Quizz</string>
+    <string name="app_name">Ma première App</string>
+    <string name="hello_world">Bonjour monde !</string>
+    <string name="offline">Déconnecté</string>
+    <string name="vsia">1 VS IA</string>
+    <string name="oneVsOne">1 VS 1</string>
+    <string name="vsteam">Equipe VS Equipe</string>
+    <string name="online">Connecté</string>
+    <string name="oneVsOneOnline">1 VS 1 En ligne</string>
 </resources>
