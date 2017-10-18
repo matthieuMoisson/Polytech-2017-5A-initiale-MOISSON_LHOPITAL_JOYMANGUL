@@ -13,8 +13,4 @@
     <string name="score">Score :18</string>
     <string name="question">De quel animal est ce cri ?</string>
     <string name="value">Valeur : 5</string>
-    <string name="r1">Chat</string>
-    <string name="r2">Chien</string>
-    <string name="r3">Renard</string>
-    <string name="r4">Canard</string>
 </resources>
