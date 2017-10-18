@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">Quizz</string>
+    <string name="app_name">Ma première App</string>
+    <string name="hello_world">Bonjour monde !</string>
+    <string name="offline">Déconnecté</string>
+    <string name="vsia">1 VS IA</string>
+    <string name="oneVsOne">1 VS 1</string>
+    <string name="vsteam">Equipe VS Equipe</string>
+    <string name="online">Connecté</string>
+    <string name="oneVsOneOnline">1 VS 1 En ligne</string>
+    <string name="team">Equipe : B</string>
+    <string name="life">Vie : 3</string>
+    <string name="player">Joueur : Sacha</string>
+    <string name="score">Score :18</string>
+    <string name="question">De quel animal est ce cri ?</string>
+    <string name="value">Valeur : 5</string>
+    <string name="r1">Chat</string>
+    <string name="r2">Chien</string>
+    <string name="r3">Renard</string>
+    <string name="r4">Canard</string>
 </resources>
