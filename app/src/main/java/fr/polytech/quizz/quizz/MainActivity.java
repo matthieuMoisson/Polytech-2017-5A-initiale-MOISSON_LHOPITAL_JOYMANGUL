@@ -5,21 +5,39 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import static fr.polytech.quizz.quizz.R.id.buttonVsIA;
+
+public class MainActivity extends AppCompatActivity implements homeFrag.onButtonClick {
+
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentManager = getFragmentManager();
+        homeFrag fragment = new homeFrag();
 
-        ExempleFragment fragment = new ExempleFragment();
+        FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
-
-        //Retrouve le fragment en utilisant son identifiant
-        //ExempleFragment mainFragment=(ExempleFragment) findViewById(R.id.list_fragment);
     }
+
+
+    @Override
+    public void onClick(int idButton) {
+        switch(idButton) {
+            case buttonVsIA:
+                questionFrag question = new questionFrag();
+                FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, question);
+                fragmentTransaction.commit();
+                break;
+            default :
+                System.out.println("Erreur");
+        }
+    }
+
+
 }

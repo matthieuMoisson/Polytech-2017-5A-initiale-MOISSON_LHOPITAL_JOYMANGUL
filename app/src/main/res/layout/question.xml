@@ -108,14 +108,12 @@
                 android:id="@+id/b_r1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/r1"
                 android:layout_weight="1"/>
 
             <Button
                 android:id="@+id/b_r2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/r2"
                 android:layout_weight="1"/>
 
         </LinearLayout>
@@ -133,13 +131,12 @@
                 android:id="@+id/b_r3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/r3"
                 android:layout_weight="1"/>
 
             <Button
+                android:id="@+id/b_r4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/r4"
                 android:layout_weight="1"/>
         </LinearLayout>
 
