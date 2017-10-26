@@ -18,7 +18,7 @@ import static fr.polytech.quizz.quizz.R.id.buttonVsIA;
 public class homeFrag extends Fragment {
 
     public interface onButtonClick {
-        public void onClick(int indiceButton);
+        void onClick(int indiceButton);
     }
 
     private onButtonClick click;
