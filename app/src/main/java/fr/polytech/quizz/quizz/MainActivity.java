@@ -2,12 +2,10 @@ package fr.polytech.quizz.quizz;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
-import static fr.polytech.quizz.quizz.R.id.buttonVsIA;
-
-public class MainActivity extends AppCompatActivity implements homeFrag.onButtonClick {
+public class MainActivity extends FragmentActivity implements BeersFragment.OnFragmentInteractionListener {
 
     private FragmentManager fragmentManager;
 
@@ -16,28 +14,61 @@ public class MainActivity extends AppCompatActivity implements homeFrag.onButton
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragmentManager = getFragmentManager();
-        homeFrag fragment = new homeFrag();
+        // Check whether the activity is using the layout version with
+        // the fragment_container FrameLayout. If so, we must add the first fragment
+        if (findViewById(R.id.fragment_container) != null) {
 
-        FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
-    }
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
 
+            // Create an instance of ExampleFragment
+            BeersFragment fragment = new BeersFragment();
 
-    @Override
-    public void onClick(int idButton) {
-        switch(idButton) {
-            case buttonVsIA:
-                questionFrag question = new questionFrag();
-                FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, question);
-                fragmentTransaction.commit();
-                break;
-            default :
-                System.out.println("Erreur");
+            // In case this activity was started with special instructions from an Intent,
+            // pass the Intent's extras to the fragment as arguments
+            fragment.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            fragmentManager = getFragmentManager();
+
+            FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
         }
     }
 
 
+    @Override
+    public void onBeerSelected(int position) {
+        // The user selected a beer of from the Beers Fragmenr
+
+        /*
+        // Capture the article fragment from the activity layout
+        BeerFragment articleFrag = (BeerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.article_fragment);
+
+        if (articleFrag != null) {
+            // If article frag is available, we're in two-pane layout...
+
+            // Call a method in the ArticleFragment to update its content
+            articleFrag.updateArticleView(position);
+
+        } */
+
+        // If the frag is not available, we're in the one-pane layout and must swap frags...
+
+        // Create fragment and give it an argument for the selected article
+        BeerFragment newFragment = new BeerFragment();
+        Bundle args = new Bundle();
+        args.putInt(BeerFragment.ARG_POSITION, position);
+        newFragment.setArguments(args);
+
+        FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, newFragment);
+        fragmentTransaction.commit();
+    }
 }
