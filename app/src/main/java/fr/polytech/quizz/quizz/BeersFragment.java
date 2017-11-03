@@ -1,27 +1,28 @@
 package fr.polytech.quizz.quizz;
 
-import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import fr.polytech.quizz.quizz.model.Beer;
+import fr.polytech.quizz.quizz.rest.BeerClient;
+import fr.polytech.quizz.quizz.rest.BeerInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BeersFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BeersFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BeersFragment extends ListFragment {
     private OnFragmentInteractionListener mListener;
+    private BeerInterface beerInterface;
 
     public BeersFragment() {
         // Required empty public constructor
@@ -30,12 +31,39 @@ public class BeersFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // We need to use a different list item layout for devices older than Honeycomb
-        int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
-                android.R.layout.simple_list_item_activated_1 : android.R.layout.simple_list_item_1;
+        beerInterface = BeerClient.getClient().create(BeerInterface.class);
 
-        // Create an array adapter for the list view, using the Ipsum headlines array
-        setListAdapter(new ArrayAdapter<String>(getActivity(), layout, Beer.Titles));
+
+        /**
+         GET List Resources
+         **/
+        Call<List<Beer>> call = beerInterface.getBeers();
+        Log.d("API", "-----------------------------------------------------------------------------------------------------------------------");
+        final List beerNames = new ArrayList<>();
+        call.enqueue(new Callback<List<Beer>>() {
+            @Override
+            public void onResponse(Call<List<Beer>> call, Response<List<Beer>> response) {
+                for (Beer beer : response.body()) {
+                    beerNames.add(beer.getName());
+                    Log.d("API", beer.getBoilVolume().getUnit());
+                }
+
+                Log.d("API", "--------------------------" + beerNames);
+                setListAdapter(new ArrayAdapter<>(getActivity(),  android.R.layout.simple_list_item_1, beerNames.toArray()));
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        return view;
     }
 
     @Override
