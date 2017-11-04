@@ -21,7 +21,7 @@ import fr.polytech.quizz.quizz.service.BeerService;
 public class BeerFragment extends Fragment {
     final static String ARG_POSITION = "position";
     private BeerInterface beerInterface;
-    private Context context;
+    private View view;
 
     int mCurrentPosition = -1;
 
@@ -42,7 +42,8 @@ public class BeerFragment extends Fragment {
         }
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_beer, container, false);
+        view = inflater.inflate(R.layout.fragment_beer, container, false);
+        return view;
     }
 
     @Override
@@ -79,9 +80,16 @@ public class BeerFragment extends Fragment {
     private void showBeer(String strBeer) {
         Gson gson = new Gson();
         Beer beer = gson.fromJson(strBeer, Beer.class);
-        ImageView imageView = (ImageView) getView().findViewById(R.id.imageView);
-        TextView text = (TextView) getView().findViewById(R.id.textView);
-        text.setText(beer.getImageUrl());
+        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+        TextView tv_name = (TextView) view.findViewById(R.id.name);
+        TextView tv_tagline = (TextView) view.findViewById(R.id.tagline);
+        TextView tv_alcohol = (TextView) view.findViewById(R.id.tv_alcohol);
+        TextView tv_description = (TextView) view.findViewById(R.id.tv_description);
+        tv_name.setText(beer.getName());
+        tv_tagline.setText(beer.getTagline());
+        tv_alcohol.setText(String.valueOf(beer.getAbv()) + " %");
+        tv_description.setText(beer.getDescription());
+
         Picasso.with(getContext()).load(beer.getImageUrl()).into(imageView);
     }
 

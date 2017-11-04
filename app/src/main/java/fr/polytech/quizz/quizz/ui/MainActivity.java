@@ -70,6 +70,9 @@ public class MainActivity extends FragmentActivity implements BeersFragment.OnFr
 
         FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, newFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        // Commit the transaction
         fragmentTransaction.commit();
     }
 }
