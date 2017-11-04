@@ -1,15 +1,28 @@
-package fr.polytech.quizz.quizz;
+package fr.polytech.quizz.quizz.ui;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import fr.polytech.quizz.quizz.R;
+import fr.polytech.quizz.quizz.model.Beer;
+import fr.polytech.quizz.quizz.rest.BeerInterface;
+import fr.polytech.quizz.quizz.service.BeerService;
 
 
 public class BeerFragment extends Fragment {
     final static String ARG_POSITION = "position";
+    private BeerInterface beerInterface;
+    private Context context;
+
     int mCurrentPosition = -1;
 
 
@@ -50,10 +63,9 @@ public class BeerFragment extends Fragment {
         }
     }
 
-    public void updateArticleView(int position) {
-        TextView article = (TextView) getActivity().findViewById(R.id.textView);
-        article.setText(Beer.Articles[position]);
-        mCurrentPosition = position;
+    public void updateArticleView(int beerId) {
+        BeerService.startActionGetBeer(getContext(), new BeerReceiver(), beerId);
+        mCurrentPosition = beerId;
     }
 
     @Override
@@ -62,5 +74,23 @@ public class BeerFragment extends Fragment {
 
         // Save the current article selection in case we need to recreate the fragment
         outState.putInt(ARG_POSITION, mCurrentPosition);
+    }
+
+    private void showBeer(String strBeer) {
+        Gson gson = new Gson();
+        Beer beer = gson.fromJson(strBeer, Beer.class);
+        ImageView imageView = (ImageView) getView().findViewById(R.id.imageView);
+        TextView text = (TextView) getView().findViewById(R.id.textView);
+        text.setText(beer.getImageUrl());
+        Picasso.with(getContext()).load(beer.getImageUrl()).into(imageView);
+    }
+
+    public class BeerReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(BeerService.ACTION_GET_BEER)) {
+                showBeer(intent.getStringExtra(BeerService.EXTRA_RESULT));
+            }
+        }
     }
 }

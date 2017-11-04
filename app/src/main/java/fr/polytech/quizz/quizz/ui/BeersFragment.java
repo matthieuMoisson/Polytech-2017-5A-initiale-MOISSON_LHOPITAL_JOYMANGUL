@@ -1,22 +1,20 @@
-package fr.polytech.quizz.quizz;
+package fr.polytech.quizz.quizz.ui;
 
 import android.app.ListFragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import fr.polytech.quizz.quizz.model.Beer;
-import fr.polytech.quizz.quizz.rest.BeerClient;
 import fr.polytech.quizz.quizz.rest.BeerInterface;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import fr.polytech.quizz.quizz.service.BeerService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,38 +29,13 @@ public class BeersFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        beerInterface = BeerClient.getClient().create(BeerInterface.class);
 
-
-        /**
-         GET List Resources
-         **/
-        Call<List<Beer>> call = beerInterface.getBeers();
-        Log.d("API", "-----------------------------------------------------------------------------------------------------------------------");
-        final List beerNames = new ArrayList<>();
-        call.enqueue(new Callback<List<Beer>>() {
-            @Override
-            public void onResponse(Call<List<Beer>> call, Response<List<Beer>> response) {
-                for (Beer beer : response.body()) {
-                    beerNames.add(beer.getName());
-                    Log.d("API", beer.getBoilVolume().getUnit());
-                }
-
-                Log.d("API", "--------------------------" + beerNames);
-                setListAdapter(new ArrayAdapter<>(getActivity(),  android.R.layout.simple_list_item_1, beerNames.toArray()));
-            }
-
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                call.cancel();
-            }
-        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-
+        BeerService.startActionGetAllBeers(getContext(), new BeersReceiver());
         return view;
     }
 
@@ -97,7 +70,7 @@ public class BeersFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Notify the parent activity of selected item
-        mListener.onBeerSelected(position);
+        mListener.onBeerSelected((int) l.getAdapter().getItemId(position));
 
         // Set the item as checked to be highlighted when in two-pane layout
         getListView().setItemChecked(position, true);
@@ -115,5 +88,24 @@ public class BeersFragment extends ListFragment {
      */
     public interface OnFragmentInteractionListener {
         void onBeerSelected(int position);
+    }
+
+    private void updateList(String strBeers) {
+        Gson gson = new Gson();
+        List<Beer> beers = gson.fromJson(strBeers, new TypeToken<List<Beer>>(){}.getType());
+        setListAdapter(new BeerRow(getActivity(), beers));
+    }
+
+    /**
+     * The receiver when the service had completed its tasks
+     * Put here the different tasks to carried out when the service has finished
+     */
+    public class BeersReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(BeerService.ACTION_GET_ALL_BEERS)) {
+                updateList(intent.getStringExtra(BeerService.EXTRA_RESULT));
+            }
+        }
     }
 }

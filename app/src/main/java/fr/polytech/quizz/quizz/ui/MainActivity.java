@@ -1,9 +1,10 @@
-package fr.polytech.quizz.quizz;
+package fr.polytech.quizz.quizz.ui;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import fr.polytech.quizz.quizz.R;
 
 public class MainActivity extends FragmentActivity implements BeersFragment.OnFragmentInteractionListener {
 
@@ -43,8 +44,8 @@ public class MainActivity extends FragmentActivity implements BeersFragment.OnFr
 
 
     @Override
-    public void onBeerSelected(int position) {
-        // The user selected a beer of from the Beers Fragmenr
+    public void onBeerSelected(int beerId) {
+        // The user selected a beer of from the beers Fragmenr
 
         /*
         // Capture the article fragment from the activity layout
@@ -64,7 +65,7 @@ public class MainActivity extends FragmentActivity implements BeersFragment.OnFr
         // Create fragment and give it an argument for the selected article
         BeerFragment newFragment = new BeerFragment();
         Bundle args = new Bundle();
-        args.putInt(BeerFragment.ARG_POSITION, position);
+        args.putInt(BeerFragment.ARG_POSITION, beerId);
         newFragment.setArguments(args);
 
         FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
