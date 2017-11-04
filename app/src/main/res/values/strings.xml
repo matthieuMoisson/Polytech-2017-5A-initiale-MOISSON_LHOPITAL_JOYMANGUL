@@ -13,4 +13,11 @@
     <string name="score">Score :18</string>
     <string name="question">De quel animal est ce cri ?</string>
     <string name="value">Valeur : 5</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="detail">Details</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="alcohol">Alcool</string>
+    <string name="description">Description</string>
+    <string name="loading">Chargement...</string>
 </resources>

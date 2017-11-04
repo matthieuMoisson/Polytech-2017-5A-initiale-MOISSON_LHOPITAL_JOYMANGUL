@@ -13,4 +13,9 @@
     <string name="score">Score :18</string>
     <string name="question">What does the fox say ?</string>
     <string name="value">value : 5</string>
+    <string name="detail">Détails</string>
+    <string name="ingredients">Ingrédients</string>
+    <string name="alcohol">Alcohol</string>
+    <string name="description">Description</string>
+    <string name="loading">Loading...</string>
 </resources>
