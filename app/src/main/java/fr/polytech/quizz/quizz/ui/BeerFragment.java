@@ -1,6 +1,7 @@
 package fr.polytech.quizz.quizz.ui;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,22 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import fr.polytech.quizz.quizz.R;
 import fr.polytech.quizz.quizz.model.Beer;
-import fr.polytech.quizz.quizz.rest.BeerInterface;
 import fr.polytech.quizz.quizz.service.BeerService;
 
 
 public class BeerFragment extends Fragment {
     final static String ARG_POSITION = "position";
-    private BeerInterface beerInterface;
     private View view;
+    private ProgressDialog progress;
 
     int mCurrentPosition = -1;
-
 
     public BeerFragment() {
         // Required empty public constructor
@@ -54,6 +55,13 @@ public class BeerFragment extends Fragment {
         // onStart is a good place to do this because the layout has already been
         // applied to the fragment at this point so we can safely call the method
         // below that sets the article text.
+        progress=new ProgressDialog(getContext());
+        progress.setMessage( getString(R.string.loading));
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
+
+
         Bundle args = getArguments();
         if (args != null) {
             // Set article based on argument passed in
@@ -90,7 +98,23 @@ public class BeerFragment extends Fragment {
         tv_alcohol.setText(String.valueOf(beer.getAbv()) + " %");
         tv_description.setText(beer.getDescription());
 
-        Picasso.with(getContext()).load(beer.getImageUrl()).into(imageView);
+        Picasso.with(getContext()).load(beer.getImageUrl()).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
+
+
+        // Hide the progress bar
+        progress.hide();
     }
 
     public class BeerReceiver extends BroadcastReceiver {
