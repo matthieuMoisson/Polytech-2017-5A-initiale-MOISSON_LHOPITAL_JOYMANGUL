@@ -17,4 +17,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="detail">Details</string>
     <string name="ingredients">Ingredients</string>
+    <string name="alcohol">Alcool</string>
+    <string name="description">Description</string>
 </resources>

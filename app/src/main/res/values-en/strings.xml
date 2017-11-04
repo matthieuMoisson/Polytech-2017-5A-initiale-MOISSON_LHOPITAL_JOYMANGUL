@@ -15,4 +15,6 @@
     <string name="value">value : 5</string>
     <string name="detail">Détails</string>
     <string name="ingredients">Ingrédients</string>
+    <string name="alcohol">Alcohol</string>
+    <string name="description">Description</string>
 </resources>
